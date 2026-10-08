@@ -1,0 +1,26 @@
+# Tuned Occlusion-Aware Tracker Configuration (OcclusionDeepSORT)
+tracker_name: "Tuned_OcclusionSORT"
+
+detector:
+  model_name: "yolov8n.pt"
+  conf_thresh: 0.35           # Better recall under partial occlusion
+  iou_thresh: 0.50
+  device: "auto"
+
+reid:
+  model_name: "mobilenet_v3_small"
+  embedding_dim: 512
+  device: "auto"
+
+tracker:
+  max_lost_age: 35            # Buffer tracks for up to 35 frames during occlusion
+  n_init: 3                   # Confirms reliable tracks
+  appearance_weight: 0.70     # 70% appearance cosine distance + 30% spatial IoU
+  stage1_match_thresh: 0.45   # Gated fused cost threshold
+  stage2_iou_thresh: 0.50     # Strict IoU fallback
+  reid_lost_thresh: 0.38      # High-confidence Re-ID recovery threshold
+  occlusion_iou_thresh: 0.20  # Flag crossing/occlusion early
+  gallery_size: 12            # Multi-view appearance memory gallery
+  feature_ema_alpha: 0.90     # Stable exponential moving average
+  enable_lost_reid: true      # Attempt Re-ID first before creating new ID
+  enable_occlusion_freeze: true # Freeze appearance updates during overlap to protect identity

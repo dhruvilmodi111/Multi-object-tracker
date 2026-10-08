@@ -1,0 +1,26 @@
+# Baseline Tracker Configuration (Standard SORT / Naive Association)
+tracker_name: "Baseline_SORT"
+
+detector:
+  model_name: "yolov8n.pt"
+  conf_thresh: 0.40
+  iou_thresh: 0.50
+  device: "auto"
+
+reid:
+  model_name: "mobilenet_v3_small"
+  embedding_dim: 512
+  device: "auto"
+
+tracker:
+  max_lost_age: 1             # No lost track buffer; immediately lost
+  n_init: 3                   # Confirm after 3 frames
+  appearance_weight: 0.0      # Pure spatial IoU matching (no Re-ID in stage 1)
+  stage1_match_thresh: 0.70   # Lenient spatial match
+  stage2_iou_thresh: 0.70
+  reid_lost_thresh: 1.0
+  occlusion_iou_thresh: 0.50
+  gallery_size: 1             # Single memory slot
+  feature_ema_alpha: 0.50
+  enable_lost_reid: false     # Never attempt Re-ID on lost targets; new ID immediately
+  enable_occlusion_freeze: false # Appearance corrupted during overlap
